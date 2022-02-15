@@ -11,5 +11,9 @@ jobs:
   verbump:
     runs-on: ubuntu-18.04
     steps:
+      - name: PWD
+        run: pwd
+      - name: LS
+        run: ls -lah
       - name: Run shell script
         run: ./verbump.sh
