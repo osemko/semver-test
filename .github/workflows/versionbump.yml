@@ -11,7 +11,5 @@ jobs:
   verbump:
     runs-on: ubuntu-18.04
     steps:
-      - name: Install Dependencies
-        run: yarn install
-      - name: Run semver
-        run: ./node_modules/.bin/semver main -i minor
+      - name: Run shell script
+        run: ./verbump.sh
