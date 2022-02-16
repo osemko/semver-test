@@ -14,6 +14,6 @@ jobs:
       - name: PWD in place
         run: pwd && ls -lah
       - name: PWD on step back
-        run: cd ../ && pwd && las -lah
+        run: cd ../ && pwd && ls -lah
       - name: Run shell script
         run: ./verbump.sh
