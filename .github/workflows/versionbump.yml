@@ -25,7 +25,7 @@ jobs:
       - name: Install deps & run build
         run: yarn install && yarn build
       - name: Set TAG_VER_STRING
-        run: echo "::set-output name=TAG_VER_STRING::${git describe --abbrev=0 --tags --match="main@*}"
+        run: echo "::set-output name=TAG_VER_STRING::${git describe --abbrev=0 --tags --match='main@*'}"
         id: tdm
       - name: Set CURR_BRANCH
         run: echo "::set-output name=CURR_BRANCH::${git rev-parse --abbrev-ref HEAD}"
