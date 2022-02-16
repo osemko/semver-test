@@ -22,8 +22,8 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Run shell script
-        run: yarn install && yarn build && ./node_modules/.bin/semver main -i minor
+      - name: Install deps & run build
+        run: yarn install && yarn build
       - name: Set TAG_VER_STRING
         run: echo '::set-output name=TAG_VER_STRING::${git describe --abbrev=0 --tags --match="main@*}'
         id: tdm
