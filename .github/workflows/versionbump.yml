@@ -43,3 +43,7 @@ jobs:
         id: btdm
       - name: Get data from managers
         run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
+      - name: Bump new tag version
+        run: |
+          TAG_PUSH_MSG="chore: release main-v${{ steps.tdm.outputs.TAG_VER }}"
+          git -c core.askpass=false tag -am $TAG_PUSH_MSG main@${{ steps.tdm.outputs.TAG_VER }}
