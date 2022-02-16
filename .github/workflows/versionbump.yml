@@ -24,14 +24,20 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Install deps & run build
         run: yarn install && yarn build
-      - name: Set TAG_VER_STRING
-        run: echo "::set-output name=TAG_VER_STRING::${git describe --abbrev=0 --tags --match='main@*'}"
+      - name: Set TAG_VER
+        run: |
+          TAG_VER_STRING="${git describe --abbrev=0 --tags --match='main@*'}"
+          echo "::set-output name=TAG_VER::$TAG_VER_STRING"
         id: tdm
       - name: Set CURR_BRANCH
-        run: echo "::set-output name=CURR_BRANCH::${git rev-parse --abbrev-ref HEAD}"
+        run: |
+          CURR_BRANCH_STRING="${git rev-parse --abbrev-ref HEAD}"
+          echo "::set-output name=CURR_BRANCH::$CURR_BRANCH_STRING"
         id: bdm
-      - name: Set BRANCH_TAG_VER_STRING
-        run: echo "::set-output name=BRANCH_TAG_VER_STRING::${git describe --tags --abbrev=0 $CURR_BRANCH^ | grep $CURR_BRANCH}"
+      - name: Set BRANCH_TAG_VER
+        run: |
+          BRANCH_TAG_VER_STRING="${git describe --tags --abbrev=0 ${{ steps.bdm.outputs.CURR_BRANCH }}^ | grep ${{ steps.bdm.outputs.CURR_BRANCH }}}"
+          echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
         id: btdm
       - name: Get data from managers
-        run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER_STRING is ${{ steps.btdm.outputs.BRANCH_TAG_VER_STRING }}; TAG_VER_STRING is ${{ steps.tdm.outputs.TAG_VER_STRING }};"
+        run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
