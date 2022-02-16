@@ -26,17 +26,17 @@ jobs:
         run: yarn install && yarn build
       - name: Set TAG_VER
         run: |
-          TAG_VER_STRING="${git describe --abbrev=0 --tags --match='main@*'}"
+          TAG_VER_STRING="${{git describe --abbrev=0 --tags --match='main@*'}}"
           echo "::set-output name=TAG_VER::$TAG_VER_STRING"
         id: tdm
       - name: Set CURR_BRANCH
         run: |
-          CURR_BRANCH_STRING="${git rev-parse --abbrev-ref HEAD}"
+          CURR_BRANCH_STRING="${{git rev-parse --abbrev-ref HEAD}}"
           echo "::set-output name=CURR_BRANCH::$CURR_BRANCH_STRING"
         id: bdm
       - name: Set BRANCH_TAG_VER
         run: |
-          BRANCH_TAG_VER_STRING="${git describe --tags --abbrev=0 ${{ steps.bdm.outputs.CURR_BRANCH }}^ | grep ${{ steps.bdm.outputs.CURR_BRANCH }}}"
+          BRANCH_TAG_VER_STRING="${{git describe --tags --abbrev=0 steps.bdm.outputs.CURR_BRANCH^ | grep steps.bdm.outputs.CURR_BRANCH}}"
           echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
         id: btdm
       - name: Get data from managers
