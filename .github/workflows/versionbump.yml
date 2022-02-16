@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: PWD
         run: pwd
+      - name: PWD on step back
+        run: pwd
       - name: LS
         run: ls -lah
       - name: Run shell script
