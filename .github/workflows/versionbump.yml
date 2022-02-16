@@ -33,7 +33,7 @@ jobs:
         id: tdm
       - name: Set CURR_BRANCH
         run: |
-          CURR_BRANCH_STRING=`git rev-parse --abbrev-ref HEAD}`
+          CURR_BRANCH_STRING=`git rev-parse --abbrev-ref HEAD`
           echo "::set-output name=CURR_BRANCH::$CURR_BRANCH_STRING"
         id: bdm
       - name: Set BRANCH_TAG_VER
