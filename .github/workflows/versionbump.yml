@@ -22,19 +22,22 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Install deps & run build
-        run: yarn install && yarn build
+      - name: Install deps
+        run: yarn install
       - name: Set TAG_VER
+        uses: actions/checkout@v2
         run: |
           TAG_VER_STRING=`git describe --abbrev=0 --tags --match="main@*"`
           echo "::set-output name=TAG_VER::$TAG_VER_STRING"
         id: tdm
       - name: Set CURR_BRANCH
+        uses: actions/checkout@v2
         run: |
           CURR_BRANCH_STRING=`git rev-parse --abbrev-ref HEAD}`
           echo "::set-output name=CURR_BRANCH::$CURR_BRANCH_STRING"
         id: bdm
       - name: Set BRANCH_TAG_VER
+        uses: actions/checkout@v2
         run: |
           BRANCH_TAG_VER_STRING=`git describe --tags --abbrev=0 ${{ steps.bdm.outputs.CURR_BRANCH }}^ | grep ${{ steps.bdm.outputs.CURR_BRANCH }}`
           echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
