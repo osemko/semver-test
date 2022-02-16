@@ -24,3 +24,14 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Run shell script
         run: yarn install && yarn build && ./node_modules/.bin/semver main -i minor
+      - name: Set TAG_VER_STRING
+        run: echo '::set-output name=TAG_VER_STRING::${git describe --abbrev=0 --tags --match="main@*}'
+        id: tdm
+      - name: Set CURR_BRANCH
+        run: echo '::set-output name=CURR_BRANCH::${git rev-parse --abbrev-ref HEAD}'
+        id: bdm
+      - name: Set BRANCH_TAG_VER_STRING
+        run: echo '::set-output name=BRANCH_TAG_VER_STRING::${git describe --tags --abbrev=0 $CURR_BRANCH^ | grep $CURR_BRANCH}'
+        id: btdm
+      - name: Get data from managers
+        run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER_STRING is ${{ steps.btdm.outputs.BRANCH_TAG_VER_STRING }}; TAG_VER_STRING is ${{ steps.btdm.outputs.TAG_VER_STRING }};"
