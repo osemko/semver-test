@@ -23,4 +23,4 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Run shell script
-        run: ./verbump.sh
+        run: yarn install && yarn build && ./node_modules/.bin/semver main -i minor
