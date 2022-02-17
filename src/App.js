@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          React is powerfull
+          React is powerfull, you should believe that
         </a>
       </header>
     </div>
