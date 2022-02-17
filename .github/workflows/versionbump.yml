@@ -50,17 +50,18 @@ jobs:
         id: bdm
       - name: Set BRANCH_TAG_VER
         run: |
-          BRANCH_TAG_VER_STRING=`git tag --merged ${{ github.head_ref }}`
+          BRANCH_TAG_VER_STRING=`git tag --merged "${{ github.head_ref }}"`
           echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
         id: btdm
-      # - name: Set LAST_COMMIT_TAG
-      #   run: |
-      #     LAST_COMMIT_TAG_STRING=`git describe --tags --abbrev=0 ${{ github.sha }}^ | grep ${{ github.sha }}`
-      #     echo "::set-output name=LAST_COMMIT_TAG::$LAST_COMMIT_TAG_STRING"
-      #   id: test-dm
+      - name: Set LAST_COMMIT_TAG
+        run: |
+          LAST_COMMIT_SHA=`git rev-parse ${{ github.head_ref }}`
+          LAST_COMMIT_TAG_STRING=`git describe --tags --abbrev=0 $LAST_COMMIT_SHA`
+          echo "::set-output name=LAST_COMMIT_TAG::$LAST_COMMIT_TAG_STRING"
+        id: test-dm
       - name: Get data from managers
         run: |
-          # echo "LAST_COMMIT_TAG is ${{ steps.bdm.outputs.CURR_BRANCH }}"
+          echo "LAST_COMMIT_TAG is ${{ steps.bdm.outputs.CURR_BRANCH }}"
           echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}"
           echo "BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}"
           echo "TAG_VER is ${{ steps.tdm.outputs.TAG_VER }}"
