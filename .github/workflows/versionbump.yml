@@ -35,6 +35,7 @@ jobs:
       - name: Set TAG_VER
         run: |
           TAG_VER_STRING=`git describe --abbrev=0 --tags --match="main@*"`
+          TAG_VER_STRING="${TAG_VER_STRING/main@/''}"
           echo "::set-output name=TAG_VER::$TAG_VER_STRING"
         id: tdm
       - name: Set CURR_BRANCH
@@ -51,6 +52,8 @@ jobs:
         run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
       - name: Bump new tag version
         run: |
+          NEXT_VER=`./node_modules/.bin/semver ${{ steps.tdm.outputs.TAG_VER }} -i minor`
           RESULT_MSG=`git -c core.askpass=false tag -am "chore: release main-v${{ steps.tdm.outputs.TAG_VER }}" main@${{ steps.tdm.outputs.TAG_VER }}`
+          echo "Next ver is $NEXT_VER"
           echo "Tag bump result is $RESULT_MSG"
           git -c core.askpass=false push --tags
