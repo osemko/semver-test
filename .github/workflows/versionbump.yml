@@ -26,6 +26,12 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Install deps
         run: yarn install
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          fetch-depth: 0
+      - name: Fetch GIT tags
+        run: git fetch --tags --progress
       - name: Set TAG_VER
         run: |
           TAG_VER_STRING=`git describe --abbrev=0 --tags --match="main@*"`
@@ -43,10 +49,8 @@ jobs:
         id: btdm
       - name: Get data from managers
         run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
-      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
-        with:
-          token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Bump new tag version
         run: |
           RESULT_MSG=`git -c core.askpass=false tag -am "chore: release main-v${{ steps.tdm.outputs.TAG_VER }}" main@${{ steps.tdm.outputs.TAG_VER }}`
           echo "Tag bump result is $RESULT_MSG"
+          git -c core.askpass=false push --tags
