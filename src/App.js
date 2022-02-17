@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React Man Boo
+          React is powerfull
         </a>
       </header>
     </div>
