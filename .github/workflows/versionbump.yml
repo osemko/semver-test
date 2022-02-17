@@ -53,6 +53,6 @@ jobs:
         run: |
           NEXT_VER=`./node_modules/.bin/semver ${{ steps.tdm.outputs.TAG_VER }} -i minor`
           echo "Next ver is $NEXT_VER"
-          RESULT_MSG=`git -c core.askpass=false tag -am "chore: release main-v${{ steps.tdm.outputs.TAG_VER }}" main@${{ steps.tdm.outputs.TAG_VER }}`
+          RESULT_MSG=`git -c core.askpass=false tag -am "chore: release main-v$NEXT_VER" main@$NEXT_VER`
           echo "Tag bump result is $RESULT_MSG"
           git -c core.askpass=false push --tags
