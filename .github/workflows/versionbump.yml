@@ -49,5 +49,5 @@ jobs:
       - name: Bump new tag version
         run: |
           TAG_PUSH_MSG="chore: release main-v${{ steps.tdm.outputs.TAG_VER }}"
-          RESULT_MSG=`git -c core.askpass=false tag -am ${{ $TAG_PUSH_MSG }} main@${{ steps.tdm.outputs.TAG_VER }}`
+          RESULT_MSG=`git -c core.askpass=false tag -am ${{ TAG_PUSH_MSG }} main@${{ steps.tdm.outputs.TAG_VER }}`
           echo "$RESULT_MSG"
