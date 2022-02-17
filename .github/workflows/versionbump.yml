@@ -29,7 +29,6 @@ jobs:
       - uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
-          fetch-depth: 0
       - name: Fetch GIT tags
         run: git fetch --tags --progress
       - name: Set TAG_VER
