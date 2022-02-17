@@ -43,6 +43,9 @@ jobs:
         id: btdm
       - name: Get data from managers
         run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Bump new tag version
         run: |
           TAG_PUSH_MSG="chore: release main-v${{ steps.tdm.outputs.TAG_VER }}"
