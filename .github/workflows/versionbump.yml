@@ -26,6 +26,12 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Install deps
         run: yarn install
+      - name: Print the input tag to STDOUT
+        run: |
+          echo  The tag is ${{ github.event.inputs.tag }}
+          echo  base_ref is ${{ github.base_ref }}
+          echo  head_ref is ${{ github.head_ref }}
+          echo  github.sha is ${{ github.sha }}
       - uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
@@ -39,7 +45,7 @@ jobs:
         id: tdm
       - name: Set CURR_BRANCH
         run: |
-          CURR_BRANCH_STRING=`git rev-parse --abbrev-ref MERGE_HEAD`
+          CURR_BRANCH_STRING=`git rev-parse --abbrev-ref HEAD`
           echo "::set-output name=CURR_BRANCH::$CURR_BRANCH_STRING"
         id: bdm
       - name: Set BRANCH_TAG_VER
@@ -47,8 +53,17 @@ jobs:
           BRANCH_TAG_VER_STRING=`git describe --tags --abbrev=0 ${{ steps.bdm.outputs.CURR_BRANCH }}^ | grep ${{ steps.bdm.outputs.CURR_BRANCH }}`
           echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
         id: btdm
+      - name: Set LAST_COMMIT_TAG
+        run: |
+          LAST_COMMIT_TAG_STRING=`git describe --tags --abbrev=0 ${{ github.sha }}^ | grep ${{ github.sha }}`
+          echo "::set-output name=LAST_COMMIT_TAG::$LAST_COMMIT_TAG_STRING"
+        id: test-dm
       - name: Get data from managers
-        run: echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}; BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}; TAG_VER is ${{ steps.tdm.outputs.TAG_VER }};"
+        run: |
+          echo "LAST_COMMIT_TAG is ${{ steps.bdm.outputs.CURR_BRANCH }}"
+          echo "CURR_BRANCH is ${{ steps.bdm.outputs.CURR_BRANCH }}"
+          echo "BRANCH_TAG_VER is ${{ steps.btdm.outputs.BRANCH_TAG_VER }}"
+          echo "TAG_VER is ${{ steps.tdm.outputs.TAG_VER }}"
       - name: Bump new tag version
         run: |
           NEXT_VER=`./node_modules/.bin/semver ${{ steps.tdm.outputs.TAG_VER }} -i minor`
