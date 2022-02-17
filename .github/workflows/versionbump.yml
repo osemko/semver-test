@@ -50,7 +50,8 @@ jobs:
         id: bdm
       - name: Set BRANCH_TAG_VER
         run: |
-          BRANCH_TAG_VER_STRING=`git tag --merged "${{ github.head_ref }}"`
+          LAST_COMMIT_SHA1=`git rev-parse ${{ github.head_ref }}`
+          BRANCH_TAG_VER_STRING=`git tag --merged $LAST_COMMIT_SHA1`
           echo "::set-output name=BRANCH_TAG_VER::$BRANCH_TAG_VER_STRING"
         id: btdm
       - name: Set LAST_COMMIT_TAG
